@@ -123,40 +123,49 @@ const Orders = () => {
             </div>
 
             <div className="space-y-4 mb-4">
-              {order.items?.map((item, index) => (
-                <div key={index} className="flex gap-4 pb-4 border-b">
-                  <img
-                    src={item.image}
-                    alt={item.name}
-                    className="w-20 h-20 object-cover rounded"
-                  />
-                  <div className="flex-1">
-                    <h3 className="font-bold">{item.name}</h3>
-                    {item.size && <p className="text-sm text-gray-600">Size: {item.size}</p>}
-                    {item.color && (
-                      <div className="flex items-center gap-2 text-sm text-gray-600">
-                        <span>Color:</span>
-                        <div className="flex items-center gap-1">
-                          <div 
-                            className="w-4 h-4 rounded-full border border-gray-400"
-                            style={{ 
-                              backgroundColor: {
-                                'Red': '#FF0000', 'Blue': '#0000FF', 'Green': '#008000', 
-                                'Yellow': '#FFFF00', 'Black': '#000000', 'White': '#FFFFFF',
-                                'Purple': '#800080', 'Pink': '#FFC0CB', 'Orange': '#FFA500',
-                                'Brown': '#A52A2A', 'Gray': '#808080', 'Navy': '#000080',
-                                'Beige': '#F5F5DC', 'Maroon': '#800000', 'Turquoise': '#40E0D0'
-                              }[item.color] || item.color
-                            }}
-                          />
-                          <span className="font-medium">{item.color}</span>
+              {order.items?.map((item, index) => {
+                // Debug: log item to see what data we have
+                console.log('Order item:', item);
+                
+                const colorMap = {
+                  'Red': '#FF0000', 'Blue': '#0000FF', 'Green': '#008000', 
+                  'Yellow': '#FFFF00', 'Black': '#000000', 'White': '#FFFFFF',
+                  'Purple': '#800080', 'Pink': '#FFC0CB', 'Orange': '#FFA500',
+                  'Brown': '#A52A2A', 'Gray': '#808080', 'Navy': '#000080',
+                  'Beige': '#F5F5DC', 'Maroon': '#800000', 'Turquoise': '#40E0D0'
+                };
+                
+                return (
+                  <div key={index} className="flex gap-4 pb-4 border-b">
+                    <img
+                      src={item.image}
+                      alt={item.name}
+                      className="w-20 h-20 object-cover rounded"
+                    />
+                    <div className="flex-1">
+                      <h3 className="font-bold">{item.name}</h3>
+                      {item.size && <p className="text-sm text-gray-600">Size: {item.size}</p>}
+                      {item.color ? (
+                        <div className="flex items-center gap-2 text-sm text-gray-600">
+                          <span>Color:</span>
+                          <div className="flex items-center gap-1">
+                            <div 
+                              className="w-4 h-4 rounded-full border border-gray-400"
+                              style={{ 
+                                backgroundColor: colorMap[item.color] || item.color
+                              }}
+                            />
+                            <span className="font-medium">{item.color}</span>
+                          </div>
                         </div>
-                      </div>
-                    )}
-                    <p className="font-bold mt-1">{item.price} EGP × {item.quantity || 1}</p>
+                      ) : (
+                        <p className="text-sm text-red-500">No color data</p>
+                      )}
+                      <p className="font-bold mt-1">{item.price} EGP × {item.quantity || 1}</p>
+                    </div>
                   </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
 
             <div className="border-t pt-4 mb-4">
