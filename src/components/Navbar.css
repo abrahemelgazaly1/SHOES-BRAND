@@ -1,0 +1,267 @@
+/* Announcement Bar */
+.announcement-bar {
+  background-color: #ffffff;
+  color: #000000;
+  overflow: hidden;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  position: relative;
+  border-bottom: 1px solid #e5e5e5;
+}
+
+.announcement-slider {
+  display: flex;
+  animation: scroll 30s linear infinite;
+  white-space: nowrap;
+}
+
+.announcement-text {
+  padding: 0 50px;
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+}
+
+@keyframes scroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+/* Logo Container */
+.logo-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  perspective: 1000px;
+}
+
+.logo-wrapper {
+  width: 85px;
+  height: 85px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.rotating-logo {
+  width: 75px;
+  height: 75px;
+  border-radius: 50%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+  animation: flipAround 4s linear infinite;
+  box-shadow: 0 4px 15px rgba(139, 69, 19, 0.15);
+  transform-style: preserve-3d;
+}
+
+.logo-wrapper:hover .rotating-logo {
+  animation: flipFast 1.5s linear infinite;
+  box-shadow: 0 8px 25px rgba(139, 69, 19, 0.3);
+}
+
+/* Flip animation like a coin - shows front and back */
+@keyframes flipAround {
+  0% {
+    transform: rotateY(0deg);
+  }
+  100% {
+    transform: rotateY(360deg);
+  }
+}
+
+/* Fast flip on hover */
+@keyframes flipFast {
+  0% {
+    transform: rotateY(0deg) scale(1.1);
+  }
+  100% {
+    transform: rotateY(360deg) scale(1.1);
+  }
+}
+
+/* Nav Icons */
+.nav-icon-btn {
+  position: relative;
+  padding: 10px;
+  border-radius: 50%;
+  transition: background-color 0.3s ease;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+.nav-icon-btn:hover {
+  background-color: #f5f5f5;
+}
+
+.menu-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.nav-badge {
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  background-color: #000000;
+  color: #ffffff;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+/* Side Menu */
+.side-menu-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 999;
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.side-menu {
+  position: fixed;
+  top: 0;
+  left: -320px;
+  width: 320px;
+  height: 100vh;
+  background-color: #ffffff;
+  box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+  transition: left 0.3s ease;
+  overflow-y: auto;
+}
+
+.side-menu-open {
+  left: 0;
+}
+
+.side-menu-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 24px;
+  border-bottom: 1px solid #e5e5e5;
+}
+
+.side-menu-title {
+  font-size: 24px;
+  font-weight: 700;
+  color: #000000;
+  margin: 0;
+}
+
+.side-menu-close {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: background-color 0.3s ease;
+  color: #000000;
+}
+
+.side-menu-close:hover {
+  background-color: #f5f5f5;
+}
+
+.side-menu-content {
+  padding: 16px 0;
+}
+
+.side-menu-item {
+  display: block;
+  padding: 16px 24px;
+  color: #000000;
+  text-decoration: none;
+  font-size: 16px;
+  font-weight: 500;
+  transition: background-color 0.2s ease;
+  border-left: 3px solid transparent;
+}
+
+.side-menu-item:hover {
+  background-color: #f5f5f5;
+  border-left-color: #000000;
+}
+
+/* Old styles - keeping for compatibility */
+.navbar {
+  background-color: #ffffff;
+  border-bottom: 1px solid #e0e0e0;
+  padding: 20px 0;
+}
+
+.navbar-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.navbar-logo img {
+  height: 40px;
+  width: auto;
+}
+
+.navbar-brand {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 28px;
+  font-weight: 700;
+  color: #000000;
+  text-decoration: none;
+}
+
+.navbar-cart {
+  position: relative;
+  color: #000000;
+}
+
+.cart-count {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  background-color: #000000;
+  color: #ffffff;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+}

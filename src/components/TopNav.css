@@ -1,0 +1,11 @@
+.top-nav {
+  background-color: #F5F5DC;
+  padding: 10px 0;
+  text-align: center;
+}
+
+.top-nav p {
+  color: #000000;
+  font-size: 14px;
+  font-weight: 400;
+}
