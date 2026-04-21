@@ -55,6 +55,9 @@ const CheckoutPage = ({ cart, setCart }) => {
     e.preventDefault();
     
     try {
+      // Debug: Check cart items
+      console.log('Cart items before grouping:', cart);
+      
       // Group cart items by product, size, and color
       const groupedCart = cart.reduce((acc, item) => {
         const key = `${item._id}-${item.size || 'no-size'}-${item.color || 'no-color'}`;
@@ -89,6 +92,9 @@ const CheckoutPage = ({ cart, setCart }) => {
         promoCode: promoApplied ? promoCode : null,
         discount: promoApplied ? discount : 0
       };
+
+      // Debug: Check order data
+      console.log('Order data being sent:', orderData);
 
       // Create order in database
       await axios.post(`${API_URL}/api/orders`, orderData);

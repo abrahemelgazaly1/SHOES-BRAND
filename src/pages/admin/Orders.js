@@ -124,9 +124,6 @@ const Orders = () => {
 
             <div className="space-y-4 mb-4">
               {order.items?.map((item, index) => {
-                // Debug: log item to see what data we have
-                console.log('Order item:', item);
-                
                 const colorMap = {
                   'Red': '#FF0000', 'Blue': '#0000FF', 'Green': '#008000', 
                   'Yellow': '#FFFF00', 'Black': '#000000', 'White': '#FFFFFF',
@@ -145,7 +142,7 @@ const Orders = () => {
                     <div className="flex-1">
                       <h3 className="font-bold">{item.name}</h3>
                       {item.size && <p className="text-sm text-gray-600">Size: {item.size}</p>}
-                      {item.color ? (
+                      {item.color && (
                         <div className="flex items-center gap-2 text-sm text-gray-600">
                           <span>Color:</span>
                           <div className="flex items-center gap-1">
@@ -158,8 +155,6 @@ const Orders = () => {
                             <span className="font-medium">{item.color}</span>
                           </div>
                         </div>
-                      ) : (
-                        <p className="text-sm text-red-500">No color data</p>
                       )}
                       <p className="font-bold mt-1">{item.price} EGP × {item.quantity || 1}</p>
                     </div>
