@@ -99,7 +99,12 @@ const ProductCard = ({ product, addToCart, addToWishlist }) => {
       </div>
       
       <h3 className="font-semibold text-base mb-1 line-clamp-2 text-[#02173A]">{product.name}</h3>
-      <p className="text-gray-700 font-bold text-lg">{product.price} EGP</p>
+      <div className="flex items-center gap-2">
+        {product.fakePrice && (
+          <p className="text-gray-500 line-through text-sm">{product.fakePrice} EGP</p>
+        )}
+        <p className="text-gray-700 font-bold text-base">{product.price} EGP</p>
+      </div>
 
       {/* Quick Order Dropdown */}
       {showQuickOrder && (
@@ -138,7 +143,8 @@ const ProductCard = ({ product, addToCart, addToWishlist }) => {
                       'Yellow': '#FFFF00', 'Black': '#000000', 'White': '#FFFFFF',
                       'Purple': '#800080', 'Pink': '#FFC0CB', 'Orange': '#FFA500',
                       'Brown': '#A52A2A', 'Gray': '#808080', 'Navy': '#000080',
-                      'Beige': '#F5F5DC', 'Maroon': '#800000', 'Turquoise': '#40E0D0'
+                      'Beige': '#F5F5DC', 'Maroon': '#800000', 'Turquoise': '#40E0D0',
+                      'White and Black': 'linear-gradient(90deg, #FFFFFF 50%, #000000 50%)'
                     };
                     return (
                       <button 
@@ -154,7 +160,9 @@ const ProductCard = ({ product, addToCart, addToWishlist }) => {
                         }`}>
                         <div 
                           className="w-4 h-4 rounded-full border border-gray-400"
-                          style={{ backgroundColor: colorMap[color] || color }}
+                          style={{ 
+                            background: colorMap[color] || color
+                          }}
                         />
                         {color}
                       </button>

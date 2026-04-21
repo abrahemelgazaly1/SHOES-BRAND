@@ -11,12 +11,17 @@ const AddProduct = ({ editProduct = null, onSave = null }) => {
   const colors = [
     'Red', 'Blue', 'Green', 'Yellow', 'Black', 
     'White', 'Purple', 'Pink', 'Orange', 'Brown',
-    'Gray', 'Navy', 'Beige', 'Maroon', 'Turquoise'
+    'Gray', 'Navy', 'Beige', 'Maroon', 'Turquoise',
+    'White and Black'
   ];
 
-  const [formData, setFormData] = useState(editProduct || {
+  const [formData, setFormData] = useState(editProduct ? {
+    ...editProduct,
+    fakePrice: editProduct.fakePrice || ''
+  } : {
     name: '',
     price: '',
+    fakePrice: '',
     description: '',
     category: '',
     sizes: [],
@@ -207,6 +212,18 @@ const AddProduct = ({ editProduct = null, onSave = null }) => {
             className="w-full px-4 py-3 border rounded-lg focus:outline-none focus:border-black"
             required
           />
+        </div>
+
+        <div className="mb-4">
+          <label className="block font-semibold mb-2">Fake Price (EGP) - Optional</label>
+          <input
+            type="number"
+            value={formData.fakePrice}
+            onChange={(e) => setFormData({ ...formData, fakePrice: e.target.value })}
+            className="w-full px-4 py-3 border rounded-lg focus:outline-none focus:border-black"
+            placeholder="Original price (will be shown as crossed out)"
+          />
+          <p className="text-sm text-gray-500 mt-1">This price will appear crossed out next to the real price</p>
         </div>
 
         <div className="mb-4">

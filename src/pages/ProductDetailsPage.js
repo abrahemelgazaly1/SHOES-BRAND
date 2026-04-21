@@ -257,7 +257,12 @@ const ProductDetailsPage = ({ addToCart, addToWishlist }) => {
         {/* Product Info */}
         <div>
           <h1 className="text-3xl font-bold mb-2 text-[#02173A]">{product.name}</h1>
-          <p className="text-2xl font-bold text-gray-700 mb-6">{product.price} EGP</p>
+          <div className="flex items-center gap-3 mb-6">
+            {product.fakePrice && (
+              <p className="text-xl text-gray-500 line-through">{product.fakePrice} EGP</p>
+            )}
+            <p className="text-2xl font-bold text-gray-700">{product.price} EGP</p>
+          </div>
           
           {/* Color Selection - Only for Shoes */}
           {product.category === 'Shoes' && product.colors && product.colors.length > 0 && (
@@ -417,7 +422,12 @@ const ProductDetailsPage = ({ addToCart, addToWishlist }) => {
                   <h3 className="font-bold text-lg text-black line-clamp-2 mb-3">{p.name}</h3>
                   
                   {/* Price */}
-                  <p className="text-xl font-bold text-black">{p.price} EGP</p>
+                  <div className="flex items-center gap-2">
+                    {p.fakePrice && (
+                      <p className="text-gray-500 line-through text-base">{p.fakePrice} EGP</p>
+                    )}
+                    <p className="text-xl font-bold text-black">{p.price} EGP</p>
+                  </div>
                 </div>
               </div>
             ))}

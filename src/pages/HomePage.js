@@ -154,7 +154,12 @@ const HomePage = ({ addToCart, addToWishlist }) => {
                     </div>
                     
                     {/* Price */}
-                    <p className="text-xl font-bold text-black mt-3">{product.price} EGP</p>
+                    <div className="flex items-center gap-2 mt-3">
+                      {product.fakePrice && (
+                        <p className="text-gray-500 line-through text-base">{product.fakePrice} EGP</p>
+                      )}
+                      <p className="text-xl font-bold text-black">{product.price} EGP</p>
+                    </div>
                   </div>
                 </div>
               ))}
@@ -194,7 +199,12 @@ const HomePage = ({ addToCart, addToWishlist }) => {
                     <h3 className="font-bold text-lg text-black line-clamp-2 mb-3">{product.name}</h3>
                     
                     {/* Price */}
-                    <p className="text-xl font-bold text-black">{product.price} EGP</p>
+                    <div className="flex items-center gap-2">
+                      {product.fakePrice && (
+                        <p className="text-gray-500 line-through text-base">{product.fakePrice} EGP</p>
+                      )}
+                      <p className="text-xl font-bold text-black">{product.price} EGP</p>
+                    </div>
                   </div>
                 </div>
               ))}

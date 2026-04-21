@@ -177,12 +177,13 @@ const CheckoutPage = ({ cart, setCart }) => {
                         <div 
                           className="w-3 h-3 md:w-4 md:h-4 rounded-full border border-gray-400"
                           style={{ 
-                            backgroundColor: {
+                            background: {
                               'Red': '#FF0000', 'Blue': '#0000FF', 'Green': '#008000', 
                               'Yellow': '#FFFF00', 'Black': '#000000', 'White': '#FFFFFF',
                               'Purple': '#800080', 'Pink': '#FFC0CB', 'Orange': '#FFA500',
                               'Brown': '#A52A2A', 'Gray': '#808080', 'Navy': '#000080',
-                              'Beige': '#F5F5DC', 'Maroon': '#800000', 'Turquoise': '#40E0D0'
+                              'Beige': '#F5F5DC', 'Maroon': '#800000', 'Turquoise': '#40E0D0',
+                              'White and Black': 'linear-gradient(90deg, #FFFFFF 50%, #000000 50%)'
                             }[item.color] || item.color
                           }}
                         />
