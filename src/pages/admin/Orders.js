@@ -132,6 +132,8 @@ const Orders = () => {
                   'Beige': '#F5F5DC', 'Maroon': '#800000', 'Turquoise': '#40E0D0'
                 };
                 
+                console.log('Order item:', item); // Debug log
+                
                 return (
                   <div key={index} className="flex gap-4 pb-4 border-b">
                     <img
@@ -140,23 +142,25 @@ const Orders = () => {
                       className="w-20 h-20 object-cover rounded"
                     />
                     <div className="flex-1">
-                      <h3 className="font-bold">{item.name}</h3>
-                      {item.size && <p className="text-sm text-gray-600">Size: {item.size}</p>}
-                      {item.color && (
-                        <div className="flex items-center gap-2 text-sm text-gray-600">
+                      <h3 className="font-bold text-lg">{item.name}</h3>
+                      {item.size && <p className="text-sm text-gray-600 mt-1">Size: <span className="font-semibold">{item.size}</span></p>}
+                      {item.color ? (
+                        <div className="flex items-center gap-2 text-sm text-gray-600 mt-1">
                           <span>Color:</span>
                           <div className="flex items-center gap-1">
                             <div 
-                              className="w-4 h-4 rounded-full border border-gray-400"
+                              className="w-5 h-5 rounded-full border-2 border-gray-400 shadow-sm"
                               style={{ 
                                 backgroundColor: colorMap[item.color] || item.color
                               }}
                             />
-                            <span className="font-medium">{item.color}</span>
+                            <span className="font-semibold text-gray-800">{item.color}</span>
                           </div>
                         </div>
+                      ) : (
+                        <p className="text-sm text-red-500 mt-1">⚠️ Color not specified</p>
                       )}
-                      <p className="font-bold mt-1">{item.price} EGP × {item.quantity || 1}</p>
+                      <p className="font-bold mt-2 text-lg">{item.price} EGP × {item.quantity || 1}</p>
                     </div>
                   </div>
                 );

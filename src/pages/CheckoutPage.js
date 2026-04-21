@@ -56,7 +56,10 @@ const CheckoutPage = ({ cart, setCart }) => {
     
     try {
       // Debug: Check cart items
+      console.log('=== CHECKOUT DEBUG ===');
       console.log('Cart items before grouping:', cart);
+      console.log('Cart items with color:', cart.filter(item => item.color));
+      console.log('Cart items without color:', cart.filter(item => !item.color));
       
       // Group cart items by product, size, and color
       const groupedCart = cart.reduce((acc, item) => {
@@ -94,7 +97,11 @@ const CheckoutPage = ({ cart, setCart }) => {
       };
 
       // Debug: Check order data
+      console.log('=== ORDER DATA DEBUG ===');
       console.log('Order data being sent:', orderData);
+      console.log('Items in order:', orderData.items);
+      console.log('Items with color:', orderData.items.filter(item => item.color));
+      console.log('Items without color:', orderData.items.filter(item => !item.color));
 
       // Create order in database
       await axios.post(`${API_URL}/api/orders`, orderData);
