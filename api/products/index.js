@@ -45,9 +45,31 @@ module.exports = async (req, res) => {
     return res.status(200).end();
   }
 
-  const { category, id, bestseller } = req.query;
+  const { category, bestseller } = req.query;
   
   try {
+    // PUT /api/products?bestseller=id - Toggle bestseller
+    if (req.method === 'PUT' && bestseller) {
+      const product = await Product.findById(bestseller);
+      
+      if (!product) {
+        return res.status(404).json({ message: 'Product not found' });
+      }
+      
+      if (product.isBestSeller) {
+        product.isBestSeller = false;
+      } else {
+        const bestSellersCount = await Product.countDocuments({ isBestSeller: true });
+        if (bestSellersCount >= 8) {
+          return res.status(400).json({ message: 'Maximum 8 best sellers allowed' });
+        }
+        product.isBestSeller = true;
+      }
+      
+      await product.save();
+      return res.json(product);
+    }
+    
     // GET /api/products?category=Men
     if (req.method === 'GET' && category) {
       const products = await Product.find({ category }).sort({ createdAt: -1 });
@@ -71,24 +93,6 @@ module.exports = async (req, res) => {
       const product = new Product(req.body);
       const newProduct = await product.save();
       return res.status(201).json(newProduct);
-    }
-    
-    // PUT /api/products?bestseller=id - Toggle bestseller
-    if (req.method === 'PUT' && bestseller) {
-      const product = await Product.findById(bestseller);
-      
-      if (product.isBestSeller) {
-        product.isBestSeller = false;
-      } else {
-        const bestSellersCount = await Product.countDocuments({ isBestSeller: true });
-        if (bestSellersCount >= 8) {
-          return res.status(400).json({ message: 'Maximum 8 best sellers allowed' });
-        }
-        product.isBestSeller = true;
-      }
-      
-      await product.save();
-      return res.json(product);
     }
     
     return res.status(400).json({ message: 'Invalid request' });

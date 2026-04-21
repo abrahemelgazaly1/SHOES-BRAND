@@ -214,6 +214,7 @@ const ProductDetailsPage = ({ addToCart, addToWishlist }) => {
         return;
       }
       
+      // Add with quantity
       for (let i = 0; i < quantity; i++) {
         addToCart({ ...product, size: selectedSize, color: selectedColor });
       }

@@ -46,21 +46,23 @@ module.exports = async (req, res) => {
   }
   
   if (req.method === 'PUT') {
-    // Extract id from URL path: /api/sold-out/product/[id]
-    const urlParts = req.url.split('/');
-    const id = urlParts[urlParts.length - 1];
+    const { product } = req.query;
+    
+    if (!product) {
+      return res.status(400).json({ message: 'Product ID is required' });
+    }
     
     try {
-      const product = await Product.findById(id);
+      const productDoc = await Product.findById(product);
       
-      if (!product) {
+      if (!productDoc) {
         return res.status(404).json({ message: 'Product not found' });
       }
       
-      product.isSoldOut = !product.isSoldOut;
+      productDoc.isSoldOut = !productDoc.isSoldOut;
       
-      await product.save();
-      return res.json(product);
+      await productDoc.save();
+      return res.json(productDoc);
     } catch (error) {
       return res.status(500).json({ message: error.message });
     }

@@ -93,7 +93,8 @@ const ManageProducts = () => {
         return;
       }
       
-      await axios.put(`${API_URL}/api/products/bestseller/${id}`);
+      // Use query parameter instead of path parameter
+      await axios.put(`${API_URL}/api/products?bestseller=${id}`);
       Swal.fire({
         icon: 'success',
         title: 'Updated!',
@@ -124,7 +125,8 @@ const ManageProducts = () => {
 
   const toggleSoldOut = async (id) => {
     try {
-      await axios.put(`${API_URL}/api/sold-out/product/${id}`);
+      // Use query parameter instead of path parameter
+      await axios.put(`${API_URL}/api/sold-out?product=${id}`);
       Swal.fire({
         icon: 'success',
         title: 'Updated!',

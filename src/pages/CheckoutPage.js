@@ -55,6 +55,25 @@ const CheckoutPage = ({ cart, setCart }) => {
     e.preventDefault();
     
     try {
+      // Group cart items by product, size, and color
+      const groupedCart = cart.reduce((acc, item) => {
+        const key = `${item._id}-${item.size || 'no-size'}-${item.color || 'no-color'}`;
+        if (!acc[key]) {
+          acc[key] = {
+            productId: item._id || item.id,
+            name: item.name,
+            price: parseFloat(item.price),
+            size: item.size,
+            color: item.color,
+            image: item.images?.[0] || item.image,
+            quantity: 1
+          };
+        } else {
+          acc[key].quantity += 1;
+        }
+        return acc;
+      }, {});
+      
       // Prepare order data
       const orderData = {
         customerInfo: {
@@ -63,14 +82,7 @@ const CheckoutPage = ({ cart, setCart }) => {
           phone1: formData.phone1,
           phone2: formData.phone2
         },
-        items: cart.map(item => ({
-          productId: item._id || item.id,
-          name: item.name,
-          price: parseFloat(item.price),
-          size: item.size,
-          image: item.images?.[0] || item.image,
-          quantity: 1
-        })),
+        items: Object.values(groupedCart),
         subtotal: subtotal,
         deliveryFee: deliveryFee,
         total: total,

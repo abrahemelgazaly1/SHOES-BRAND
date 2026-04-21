@@ -132,8 +132,8 @@ const Orders = () => {
                   />
                   <div className="flex-1">
                     <h3 className="font-bold">{item.name}</h3>
-                    <p className="text-sm text-gray-600">Size: {item.size}</p>
-                    <p className="text-sm text-gray-600">Color: {item.color}</p>
+                    {item.size && <p className="text-sm text-gray-600">Size: {item.size}</p>}
+                    {item.color && <p className="text-sm text-gray-600">Color: {item.color}</p>}
                     <p className="font-bold mt-1">{item.price} EGP × {item.quantity || 1}</p>
                   </div>
                 </div>

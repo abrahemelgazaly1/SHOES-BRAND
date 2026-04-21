@@ -4,6 +4,25 @@ import { useNavigate } from 'react-router-dom';
 const CartPage = ({ cart, removeFromCart }) => {
   const navigate = useNavigate();
   const deliveryFee = 120;
+  
+  // Group cart items by product id, size, and color
+  const groupedCart = cart.reduce((acc, item, index) => {
+    const key = `${item._id}-${item.size || 'no-size'}-${item.color || 'no-color'}`;
+    if (!acc[key]) {
+      acc[key] = {
+        ...item,
+        quantity: 1,
+        indices: [index]
+      };
+    } else {
+      acc[key].quantity += 1;
+      acc[key].indices.push(index);
+    }
+    return acc;
+  }, {});
+  
+  const groupedItems = Object.values(groupedCart);
+  
   const subtotal = cart.reduce((sum, item) => sum + item.price, 0);
   const total = subtotal + deliveryFee;
 
@@ -27,18 +46,22 @@ const CartPage = ({ cart, removeFromCart }) => {
       ) : (
         <div className="grid md:grid-cols-3 gap-8">
           <div className="md:col-span-2 space-y-4">
-            {cart.map((item, index) => (
-              <div key={index} className="flex gap-4 bg-white p-4 rounded-lg shadow border border-gray-200">
+            {groupedItems.map((item, idx) => (
+              <div key={idx} className="flex gap-4 bg-white p-4 rounded-lg shadow border border-gray-200">
                 <img src={item.images?.[0] || item.image} alt={item.name} className="w-24 h-24 object-cover rounded" />
                 <div className="flex-1">
                   <h3 className="font-bold text-lg mb-1 text-black">{item.name}</h3>
                   {item.size && <p className="text-sm text-gray-600">Size: {item.size}</p>}
                   {item.color && <p className="text-sm text-gray-600">Color: {item.color}</p>}
-                  <p className="font-bold mt-2">{item.price} EGP</p>
+                  <p className="font-bold mt-2">{item.price} EGP × {item.quantity}</p>
+                  <p className="text-sm text-gray-600 mt-1">Total: {item.price * item.quantity} EGP</p>
                 </div>
                 <button 
                   className="text-black hover:text-gray-600 font-semibold"
-                  onClick={() => removeFromCart(index)}>
+                  onClick={() => {
+                    // Remove all instances of this item
+                    item.indices.reverse().forEach(index => removeFromCart(index));
+                  }}>
                   Remove
                 </button>
               </div>

@@ -101,11 +101,11 @@ const Navbar = ({ cartCount, wishlistCount = 0 }) => {
           <Link to="/" className="side-menu-item" onClick={toggleSideMenu}>
             Home
           </Link>
-          <Link to="/men" className="side-menu-item" onClick={toggleSideMenu}>
-            Men's Shoes
+          <Link to="/category/Shoes" className="side-menu-item" onClick={toggleSideMenu}>
+            Shoes
           </Link>
-          <Link to="/women" className="side-menu-item" onClick={toggleSideMenu}>
-            Women's Shoes
+          <Link to="/category/Accessories" className="side-menu-item" onClick={toggleSideMenu}>
+            Accessories
           </Link>
           <Link to="/cart" className="side-menu-item" onClick={toggleSideMenu}>
             Shopping Cart
