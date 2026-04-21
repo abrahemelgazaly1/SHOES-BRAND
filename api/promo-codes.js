@@ -21,10 +21,7 @@ let cachedDb = null;
 
 async function connectToDatabase() {
   if (cachedDb) return cachedDb;
-  const connection = await mongoose.connect(process.env.MONGODB_URI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  });
+  const connection = await mongoose.connect(process.env.MONGODB_URI);
   cachedDb = connection;
   return connection;
 }
@@ -33,14 +30,17 @@ module.exports = async (req, res) => {
   await connectToDatabase();
   
   res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, DELETE, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
   
   if (req.method === 'OPTIONS') {
     return res.status(200).end();
   }
   
-  if (req.method === 'GET') {
+  const path = req.url.split('?')[0];
+  
+  // GET /api/promo-codes - Get all promo codes
+  if (req.method === 'GET' && path === '/api/promo-codes') {
     try {
       const promoCodes = await PromoCode.find().sort({ createdAt: -1 });
       return res.json(promoCodes);
@@ -49,67 +49,91 @@ module.exports = async (req, res) => {
     }
   }
   
-  if (req.method === 'POST') {
-    const { action, code, discount, validDays, maxUses } = req.body;
-    
+  // POST /api/promo-codes/create - Create new promo code
+  if (req.method === 'POST' && path === '/api/promo-codes/create') {
     try {
-      if (action === 'create') {
-        const daysToMs = { '1': 1, '2': 2, '3': 3, '4': 4, '5': 5, '6': 6, '7': 7, '10': 10, '14': 14, '30': 30, '60': 60 };
-        const days = daysToMs[validDays] || parseInt(validDays);
-        const expiresAt = new Date(Date.now() + days * 24 * 60 * 60 * 1000);
-        
-        const promoCode = new PromoCode({
-          code: code.toUpperCase(),
-          discount: parseInt(discount),
-          validDays: days,
-          maxUses: parseInt(maxUses),
-          expiresAt
-        });
-        
-        await promoCode.save();
-        return res.status(201).json(promoCode);
-      }
+      const { code, discount, validDays, maxUses } = req.body;
       
-      if (action === 'validate') {
-        const promoCode = await PromoCode.findOne({ code: code.toUpperCase() });
-        
-        if (!promoCode) {
-          return res.status(404).json({ valid: false, message: 'Invalid promo code' });
-        }
-        
-        if (!promoCode.isActive) {
-          return res.status(400).json({ valid: false, message: 'Promo code is inactive' });
-        }
-        
-        if (new Date() > promoCode.expiresAt) {
-          return res.status(400).json({ valid: false, message: 'Promo code has expired' });
-        }
-        
-        if (promoCode.currentUses >= promoCode.maxUses) {
-          return res.status(400).json({ valid: false, message: 'Promo code usage limit reached' });
-        }
-        
-        return res.json({ valid: true, discount: promoCode.discount });
-      }
+      const daysToMs = { 
+        '1': 1, '2': 2, '3': 3, '4': 4, '5': 5, '6': 6, '7': 7, 
+        '10': 10, '14': 14, '30': 30, '60': 60 
+      };
       
-      if (action === 'use') {
-        const promoCode = await PromoCode.findOne({ code: code.toUpperCase() });
-        
-        if (!promoCode) {
-          return res.status(404).json({ message: 'Invalid promo code' });
-        }
-        
-        promoCode.currentUses += 1;
-        await promoCode.save();
-        
-        return res.json({ success: true });
-      }
+      const days = daysToMs[validDays] || parseInt(validDays);
+      const expiresAt = new Date(Date.now() + days * 24 * 60 * 60 * 1000);
       
-      return res.status(400).json({ message: 'Invalid action' });
+      const promoCode = new PromoCode({
+        code: code.toUpperCase(),
+        discount: parseInt(discount),
+        validDays: days,
+        maxUses: parseInt(maxUses),
+        expiresAt
+      });
+      
+      await promoCode.save();
+      return res.status(201).json(promoCode);
     } catch (error) {
       return res.status(500).json({ message: error.message });
     }
   }
   
-  return res.status(405).json({ message: 'Method not allowed' });
+  // POST /api/promo-codes/validate - Validate promo code
+  if (req.method === 'POST' && path === '/api/promo-codes/validate') {
+    try {
+      const { code } = req.body;
+      const promoCode = await PromoCode.findOne({ code: code.toUpperCase() });
+      
+      if (!promoCode) {
+        return res.status(404).json({ valid: false, message: 'Invalid promo code' });
+      }
+      
+      if (!promoCode.isActive) {
+        return res.status(400).json({ valid: false, message: 'Promo code is inactive' });
+      }
+      
+      if (new Date() > promoCode.expiresAt) {
+        return res.status(400).json({ valid: false, message: 'Promo code has expired' });
+      }
+      
+      if (promoCode.currentUses >= promoCode.maxUses) {
+        return res.status(400).json({ valid: false, message: 'Promo code usage limit reached' });
+      }
+      
+      return res.json({ valid: true, discount: promoCode.discount });
+    } catch (error) {
+      return res.status(500).json({ message: error.message });
+    }
+  }
+  
+  // POST /api/promo-codes/use - Use promo code
+  if (req.method === 'POST' && path === '/api/promo-codes/use') {
+    try {
+      const { code } = req.body;
+      const promoCode = await PromoCode.findOne({ code: code.toUpperCase() });
+      
+      if (!promoCode) {
+        return res.status(404).json({ message: 'Invalid promo code' });
+      }
+      
+      promoCode.currentUses += 1;
+      await promoCode.save();
+      
+      return res.json({ success: true });
+    } catch (error) {
+      return res.status(500).json({ message: error.message });
+    }
+  }
+  
+  // DELETE /api/promo-codes/:id - Delete promo code
+  if (req.method === 'DELETE' && path.startsWith('/api/promo-codes/')) {
+    try {
+      const id = path.split('/').pop();
+      await PromoCode.findByIdAndDelete(id);
+      return res.json({ message: 'Promo code deleted successfully' });
+    } catch (error) {
+      return res.status(500).json({ message: error.message });
+    }
+  }
+  
+  return res.status(404).json({ message: 'Route not found' });
 };

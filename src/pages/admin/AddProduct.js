@@ -273,7 +273,7 @@ const AddProduct = ({ editProduct = null, onSave = null }) => {
                   type="button"
                   onClick={() => toggleSelection('sizes', size)}
                   className={`px-4 py-2 rounded-lg font-bold transition ${
-                    formData.sizes.includes(size)
+                    (formData.sizes || []).includes(size)
                       ? 'bg-[#02173A] text-white'
                       : 'bg-gray-200 text-black hover:bg-gray-300'
                   }`}>
@@ -295,7 +295,7 @@ const AddProduct = ({ editProduct = null, onSave = null }) => {
                   type="button"
                   onClick={() => toggleSelection('colors', color)}
                   className={`px-4 py-2 rounded-lg font-bold transition ${
-                    formData.colors.includes(color)
+                    (formData.colors || []).includes(color)
                       ? 'bg-[#02173A] text-white'
                       : 'bg-gray-200 text-black hover:bg-gray-300'
                   }`}>
@@ -307,7 +307,7 @@ const AddProduct = ({ editProduct = null, onSave = null }) => {
         )}
 
         {/* Sold Out Sizes - Only for Shoes when editing */}
-        {editProduct && formData.category === 'Shoes' && formData.sizes.length > 0 && (
+        {editProduct && formData.category === 'Shoes' && formData.sizes?.length > 0 && (
           <div className="mb-4 p-4 bg-red-50 rounded-lg border border-red-200">
             <label className="block font-semibold mb-2 text-red-800">Sold Out Sizes</label>
             <p className="text-sm text-gray-600 mb-2">Select sizes that are sold out:</p>
@@ -318,7 +318,7 @@ const AddProduct = ({ editProduct = null, onSave = null }) => {
                   type="button"
                   onClick={() => toggleSelection('soldOutSizes', size)}
                   className={`px-4 py-2 rounded-lg font-bold transition ${
-                    formData.soldOutSizes?.includes(size)
+                    (formData.soldOutSizes || []).includes(size)
                       ? 'bg-red-600 text-white'
                       : 'bg-white text-black border border-gray-300 hover:bg-gray-100'
                   }`}>
@@ -330,7 +330,7 @@ const AddProduct = ({ editProduct = null, onSave = null }) => {
         )}
 
         {/* Sold Out Colors - Only for Shoes when editing */}
-        {editProduct && formData.category === 'Shoes' && formData.colors.length > 0 && (
+        {editProduct && formData.category === 'Shoes' && formData.colors?.length > 0 && (
           <div className="mb-4 p-4 bg-red-50 rounded-lg border border-red-200">
             <label className="block font-semibold mb-2 text-red-800">Sold Out Colors</label>
             <p className="text-sm text-gray-600 mb-2">Select colors that are sold out:</p>
@@ -341,7 +341,7 @@ const AddProduct = ({ editProduct = null, onSave = null }) => {
                   type="button"
                   onClick={() => toggleSelection('soldOutColors', color)}
                   className={`px-4 py-2 rounded-lg font-bold transition ${
-                    formData.soldOutColors?.includes(color)
+                    (formData.soldOutColors || []).includes(color)
                       ? 'bg-red-600 text-white'
                       : 'bg-white text-black border border-gray-300 hover:bg-gray-100'
                   }`}>
