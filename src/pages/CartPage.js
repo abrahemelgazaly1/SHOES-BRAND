@@ -52,7 +52,26 @@ const CartPage = ({ cart, removeFromCart }) => {
                 <div className="flex-1">
                   <h3 className="font-bold text-lg mb-1 text-black">{item.name}</h3>
                   {item.size && <p className="text-sm text-gray-600">Size: {item.size}</p>}
-                  {item.color && <p className="text-sm text-gray-600">Color: {item.color}</p>}
+                  {item.color && (
+                    <div className="flex items-center gap-2 text-sm text-gray-600">
+                      <span>Color:</span>
+                      <div className="flex items-center gap-1">
+                        <div 
+                          className="w-4 h-4 rounded-full border border-gray-400"
+                          style={{ 
+                            backgroundColor: {
+                              'Red': '#FF0000', 'Blue': '#0000FF', 'Green': '#008000', 
+                              'Yellow': '#FFFF00', 'Black': '#000000', 'White': '#FFFFFF',
+                              'Purple': '#800080', 'Pink': '#FFC0CB', 'Orange': '#FFA500',
+                              'Brown': '#A52A2A', 'Gray': '#808080', 'Navy': '#000080',
+                              'Beige': '#F5F5DC', 'Maroon': '#800000', 'Turquoise': '#40E0D0'
+                            }[item.color] || item.color
+                          }}
+                        />
+                        <span className="font-medium">{item.color}</span>
+                      </div>
+                    </div>
+                  )}
                   <p className="font-bold mt-2">{item.price} EGP × {item.quantity}</p>
                   <p className="text-sm text-gray-600 mt-1">Total: {item.price * item.quantity} EGP</p>
                 </div>

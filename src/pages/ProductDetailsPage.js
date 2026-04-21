@@ -140,14 +140,11 @@ const ProductDetailsPage = ({ addToCart, addToWishlist }) => {
         return;
       }
       
-      for (let i = 0; i < quantity; i++) {
-        addToCart({ ...product, size: selectedSize, color: selectedColor });
-      }
+      // Add item with quantity
+      addToCart({ ...product, size: selectedSize, color: selectedColor, quantity });
     } else {
       // For Accessories, no size/color needed
-      for (let i = 0; i < quantity; i++) {
-        addToCart({ ...product });
-      }
+      addToCart({ ...product, quantity });
     }
     
     Swal.fire({
@@ -214,15 +211,11 @@ const ProductDetailsPage = ({ addToCart, addToWishlist }) => {
         return;
       }
       
-      // Add with quantity
-      for (let i = 0; i < quantity; i++) {
-        addToCart({ ...product, size: selectedSize, color: selectedColor });
-      }
+      // Add item with quantity
+      addToCart({ ...product, size: selectedSize, color: selectedColor, quantity });
     } else {
       // For Accessories, no size/color needed
-      for (let i = 0; i < quantity; i++) {
-        addToCart({ ...product });
-      }
+      addToCart({ ...product, quantity });
     }
     
     navigate('/checkout');

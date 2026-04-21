@@ -156,7 +156,27 @@ const CheckoutPage = ({ cart, setCart }) => {
                 <img src={item.images?.[0] || item.image} alt={item.name} className="w-16 h-16 md:w-20 md:h-20 object-cover rounded flex-shrink-0" />
                 <div className="flex-1 min-w-0">
                   <h3 className="font-semibold text-sm md:text-base truncate">{item.name}</h3>
-                  <p className="text-xs md:text-sm text-gray-600">Size: {item.size}</p>
+                  {item.size && <p className="text-xs md:text-sm text-gray-600">Size: {item.size}</p>}
+                  {item.color && (
+                    <div className="flex items-center gap-2 text-xs md:text-sm text-gray-600">
+                      <span>Color:</span>
+                      <div className="flex items-center gap-1">
+                        <div 
+                          className="w-3 h-3 md:w-4 md:h-4 rounded-full border border-gray-400"
+                          style={{ 
+                            backgroundColor: {
+                              'Red': '#FF0000', 'Blue': '#0000FF', 'Green': '#008000', 
+                              'Yellow': '#FFFF00', 'Black': '#000000', 'White': '#FFFFFF',
+                              'Purple': '#800080', 'Pink': '#FFC0CB', 'Orange': '#FFA500',
+                              'Brown': '#A52A2A', 'Gray': '#808080', 'Navy': '#000080',
+                              'Beige': '#F5F5DC', 'Maroon': '#800000', 'Turquoise': '#40E0D0'
+                            }[item.color] || item.color
+                          }}
+                        />
+                        <span className="font-medium">{item.color}</span>
+                      </div>
+                    </div>
+                  )}
                   <p className="font-bold mt-1 text-sm md:text-base">{item.price} EGP</p>
                 </div>
               </div>

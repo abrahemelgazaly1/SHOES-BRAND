@@ -36,7 +36,18 @@ function App() {
   }, [wishlist]);
 
   const addToCart = (product) => {
-    setCart([...cart, product]);
+    // If product has quantity, add multiple items
+    if (product.quantity && product.quantity > 1) {
+      const items = [];
+      for (let i = 0; i < product.quantity; i++) {
+        const { quantity, ...productWithoutQuantity } = product;
+        items.push(productWithoutQuantity);
+      }
+      setCart([...cart, ...items]);
+    } else {
+      const { quantity, ...productWithoutQuantity } = product;
+      setCart([...cart, productWithoutQuantity]);
+    }
   };
 
   const removeFromCart = (index) => {
