@@ -17,7 +17,9 @@ const AddProduct = ({ editProduct = null, onSave = null }) => {
 
   const [formData, setFormData] = useState(editProduct ? {
     ...editProduct,
-    fakePrice: editProduct.fakePrice || ''
+    fakePrice: editProduct.fakePrice || '',
+    colors: editProduct.colors || [],
+    soldOutColors: editProduct.soldOutColors || []
   } : {
     name: '',
     price: '',
@@ -136,8 +138,14 @@ const AddProduct = ({ editProduct = null, onSave = null }) => {
     e.preventDefault();
 
     try {
+      // Prepare data with fakePrice as number or undefined
+      const dataToSend = {
+        ...formData,
+        fakePrice: formData.fakePrice ? Number(formData.fakePrice) : undefined
+      };
+
       if (editProduct) {
-        await axios.put(`${API_URL}/api/products/${editProduct._id}`, formData);
+        await axios.put(`${API_URL}/api/products/${editProduct._id}`, dataToSend);
         Swal.fire({
           icon: 'success',
           title: 'Updated!',
@@ -147,7 +155,7 @@ const AddProduct = ({ editProduct = null, onSave = null }) => {
         });
         if (onSave) onSave();
       } else {
-        await axios.post(`${API_URL}/api/products`, formData);
+        await axios.post(`${API_URL}/api/products`, dataToSend);
         Swal.fire({
           icon: 'success',
           title: 'Added!',
@@ -158,11 +166,14 @@ const AddProduct = ({ editProduct = null, onSave = null }) => {
         setFormData({
           name: '',
           price: '',
+          fakePrice: '',
           description: '',
           category: '',
           sizes: [],
+          colors: [],
           images: [],
-          soldOutSizes: []
+          soldOutSizes: [],
+          soldOutColors: []
         });
       }
     } catch (error) {

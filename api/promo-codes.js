@@ -37,10 +37,12 @@ module.exports = async (req, res) => {
     return res.status(200).end();
   }
   
-  const path = req.url.split('?')[0];
+  // Extract action from query or URL
+  const { action, id } = req.query;
+  const path = req.url ? req.url.split('?')[0] : '';
   
   // GET /api/promo-codes - Get all promo codes
-  if (req.method === 'GET' && path === '/api/promo-codes') {
+  if (req.method === 'GET' && !action) {
     try {
       const promoCodes = await PromoCode.find().sort({ createdAt: -1 });
       return res.json(promoCodes);
@@ -49,8 +51,8 @@ module.exports = async (req, res) => {
     }
   }
   
-  // POST /api/promo-codes/create - Create new promo code
-  if (req.method === 'POST' && path === '/api/promo-codes/create') {
+  // POST /api/promo-codes?action=create - Create new promo code
+  if (req.method === 'POST' && (action === 'create' || path.includes('/create'))) {
     try {
       const { code, discount, validDays, maxUses } = req.body;
       
@@ -77,8 +79,8 @@ module.exports = async (req, res) => {
     }
   }
   
-  // POST /api/promo-codes/validate - Validate promo code
-  if (req.method === 'POST' && path === '/api/promo-codes/validate') {
+  // POST /api/promo-codes?action=validate - Validate promo code
+  if (req.method === 'POST' && (action === 'validate' || path.includes('/validate'))) {
     try {
       const { code } = req.body;
       const promoCode = await PromoCode.findOne({ code: code.toUpperCase() });
@@ -105,8 +107,8 @@ module.exports = async (req, res) => {
     }
   }
   
-  // POST /api/promo-codes/use - Use promo code
-  if (req.method === 'POST' && path === '/api/promo-codes/use') {
+  // POST /api/promo-codes?action=use - Use promo code
+  if (req.method === 'POST' && (action === 'use' || path.includes('/use'))) {
     try {
       const { code } = req.body;
       const promoCode = await PromoCode.findOne({ code: code.toUpperCase() });
@@ -124,11 +126,11 @@ module.exports = async (req, res) => {
     }
   }
   
-  // DELETE /api/promo-codes/:id - Delete promo code
-  if (req.method === 'DELETE' && path.startsWith('/api/promo-codes/')) {
+  // DELETE /api/promo-codes?id=xxx - Delete promo code
+  if (req.method === 'DELETE' && (id || path.includes('/api/promo-codes/'))) {
     try {
-      const id = path.split('/').pop();
-      await PromoCode.findByIdAndDelete(id);
+      const promoId = id || path.split('/').pop();
+      await PromoCode.findByIdAndDelete(promoId);
       return res.json({ message: 'Promo code deleted successfully' });
     } catch (error) {
       return res.status(500).json({ message: error.message });

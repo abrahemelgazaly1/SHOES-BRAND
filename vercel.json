@@ -1,0 +1,60 @@
+{
+  "version": 2,
+  "builds": [
+    {
+      "src": "package.json",
+      "use": "@vercel/static-build",
+      "config": {
+        "distDir": "build"
+      }
+    }
+  ],
+  "routes": [
+    {
+      "src": "/api/promo-codes/create",
+      "dest": "/api/promo-codes.js?action=create"
+    },
+    {
+      "src": "/api/promo-codes/validate",
+      "dest": "/api/promo-codes.js?action=validate"
+    },
+    {
+      "src": "/api/promo-codes/use",
+      "dest": "/api/promo-codes.js?action=use"
+    },
+    {
+      "src": "/api/promo-codes/(.*)",
+      "dest": "/api/promo-codes.js?id=$1"
+    },
+    {
+      "src": "/api/promo-codes",
+      "dest": "/api/promo-codes.js"
+    },
+    {
+      "src": "/api/(.*)",
+      "dest": "/api/index.js"
+    },
+    {
+      "src": "/static/(.*)",
+      "dest": "/static/$1"
+    },
+    {
+      "src": "/(.*\\.(js|css|json|ico|jpg|jpeg|png|gif|svg|woff|woff2|ttf|eot))",
+      "dest": "/$1"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/index.html"
+    }
+  ],
+  "functions": {
+    "api/index.js": {
+      "memory": 1024,
+      "maxDuration": 10
+    },
+    "api/promo-codes.js": {
+      "memory": 1024,
+      "maxDuration": 10
+    }
+  }
+}
